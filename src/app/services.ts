@@ -4,7 +4,6 @@ const url: string = "https://judge0-ce.p.rapidapi.com/submissions";
 
 const apiKey = process.env.NEXT_PUBLIC_PUBLICAPI_KEY;
 
-
 const languageCodes: Record<string, number> = {
   cpp: 53,
   javascript: 63,
@@ -21,12 +20,9 @@ export async function codeExec(
   const payload = {
     source_code: code,
     language_id: languageCodes[language],
-    stdin: input ? input : "",
+    stdin: input || "",
     expected_output: "",
   };
-  console.log("your code is");
-  console.log(code);
-  console.log("payload is ", payload);
 
   try {
     const response: AxiosResponse<any> = await axios.post(url, payload, {
@@ -36,7 +32,7 @@ export async function codeExec(
       },
     });
 
-    if (response.status == 201) {
+    if (response.status === 201) {
       const submissionToken: string = response.data.token;
 
       console.log("your token is ", submissionToken);

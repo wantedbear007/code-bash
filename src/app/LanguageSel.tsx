@@ -1,42 +1,40 @@
-import React, { useState } from "react";
+import React from "react";
 import { LANGUAGE_VERSIONS } from "./constants";
 
-interface LanguageSelector {
+interface LanguageSelectorProps {
   language: string;
   selectLanguage: (lan: string) => void;
 }
 
-export default function LanguageSelector({
+const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   language,
   selectLanguage,
-}: LanguageSelector) {
+}) => {
   const languages = Object.entries(LANGUAGE_VERSIONS);
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     selectLanguage(event.target.value);
   };
 
   return (
-    <>
-      <label className="font-semibold">Language</label>
+    <div className="flex items-center">
+      <label htmlFor="language" className="font-mono font-semibold mr-2">
+        Language
+      </label>
       <select
+        id="language"
         value={language}
         onChange={handleChange}
-        className="border mx-5 border-black rounded-md px-2 py-1"
+        className="border border-black rounded-md px-2 py-1 focus:outline-none"
       >
-        {languages.map(([language, version]) => (
-          <option
-            key={language}
-            onClick={() => selectLanguage(language)}
-            value={language}
-          >
-            {language}
+        {languages.map(([lang, version]) => (
+          <option key={lang} value={lang}>
+            {lang}
           </option>
         ))}
       </select>
-    </>
+    </div>
   );
-}
+};
 
-// https://www.youtube.com/watch?v=THgBePRV13o
-// complete it
+export default LanguageSelector;

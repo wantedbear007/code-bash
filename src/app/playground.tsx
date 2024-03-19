@@ -3,7 +3,7 @@ import Editor from "@monaco-editor/react";
 import { useRef, useState } from "react";
 import React from "react";
 import LanguageSelector from "./LanguageSel";
-import { codeExec } from "./services2";
+import { codeExec } from "./services";
 
 export default function Playground() {
   const editorRef = useRef(null);
@@ -26,7 +26,9 @@ export default function Playground() {
   }
 
   // run code handler
-  async function runCode(e: any): Promise<void> {
+  async function runCode(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): Promise<void> {
     e.preventDefault();
     setBtnText("Running");
 
@@ -45,77 +47,70 @@ export default function Playground() {
   }
 
   return (
-    <main className="">
-      <h1 className="text-xl text-center antialiased font-mono font-bold py-2">
-        Coding Playground
-      </h1>
+<main className="bg-gray-100 min-h-screen flex flex-col justify-center items-center">
+  <h1 className="text-3xl font-bold py-4 font-mono text-center">Coding Playground</h1>
 
-      <div className="px-2 py-2 min-h-screen flex flex-row justify-center items-center ">
-        <div>
-          <form>
-            <div>
-              <label className="font-semibold" htmlFor="username">
-                Username
-              </label>
-              <input
-                className="border mx-5  border-black rounded-md px-2 py-1"
-                placeholder="Enter your username"
-                id="username"
-                type="text"
-              />
-              <label className="font-semibold">Language</label>
-              <LanguageSelector
-                language={language}
-                selectLanguage={selectLanguage}
-              />
-            </div>
-            <>
-              <label>Write code below</label>
-              <br></br>
-              <Editor
-                defaultLanguage={language}
-                className="border border-black rounded-md"
-                height="50vh"
-                theme="vs-dark"
-                value={code}
-                language={language}
-                onChange={(val, event) => {
-                  setCode(val!);
-                }}
-                // defaultLanguage="javascript"
-                onMount={handleEditorDidMount}
-              />
-            </>
-            <>
-              <label>Write input if needed</label>
-              <br></br>
-              <Editor
-                className="border border-black rounded-md"
-                height="10vh"
-                onMount={handleStdInDidMount}
-              />
-            </>
-            <button
-              onClick={runCode}
-              className="px-10 text-white py-2 my-5 font-mono  rounded-lg bg-green-700 hover:bg-green-900 transition-all"
-            >
-              {btnText}
-            </button>
-          </form>
-        </div>
+  <div className="flex flex-col md:flex-row justify-center items-center w-full">
+    <form className="w-full md:w-1/2 px-4 md:px-0 mx-10">
+      <div className="mb-4">
+        <label htmlFor="username" className="font-mono font-semibold">Username</label>
+        <input
 
-        <div className="px-10">
-          <h2>Output</h2>
-
-          <Editor
-            height="64vh"
-            // width="65vw"
-            width="70vh"
-            value={output}
-            className="border border-black rounded-md"
-          />
-        </div>
+          id="username"
+          type="text"
+          placeholder="Enter your username"
+          className="border mb-5 font-mono  border-gray-400 rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500"
+        />
+        <LanguageSelector
+          language={language}
+          selectLanguage={selectLanguage}
+        />
       </div>
-    </main>
+
+      <div className="mb-4">
+        <label htmlFor="code" className="font-semibold font-mono">Write code below</label>
+        <Editor
+          defaultLanguage={language}
+          className="border border-gray-400 rounded-md"
+          height="50vh"
+          theme="vs-dark"
+          value={code}
+          language={language}
+          onChange={(val, event) => {
+            setCode(val!);
+          }}
+          onMount={handleEditorDidMount}
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="input" className="font-mono font-semibold">Write input if needed</label>
+        <Editor
+          className="border border-gray-400 rounded-md"
+          height="10vh"
+          onMount={handleStdInDidMount}
+        />
+      </div>
+
+      <button
+        onClick={runCode}
+        className=" font-mono w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md transition-all focus:outline-none"
+      >
+        {btnText}
+      </button>
+    </form>
+
+    <div className="w-full md:w-1/2 px-4">
+      <h2 className="text-xl font-bold mb-4">Output</h2>
+      <Editor
+        height="64vh"
+        width="100%"
+        value={output}
+        className="border font-mono border-gray-400 rounded-md"
+      />
+    </div>
+  </div>
+</main>
+
   );
 }
