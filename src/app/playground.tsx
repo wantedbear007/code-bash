@@ -3,7 +3,6 @@ import Editor from "@monaco-editor/react";
 import { useRef, useState } from "react";
 import React from "react";
 import LanguageSelector from "./LanguageSel";
-import { executeCode } from "./services";
 import { codeExec } from "./services2";
 
 export default function Playground() {
@@ -14,7 +13,6 @@ export default function Playground() {
   const [language, setLanguage] = useState<string>("javascript");
   const [output, setOutput] = useState<string>("");
   const [btnText, setBtnText] = useState<string>("runCode");
-
 
   // for handling editor code
   function handleEditorDidMount(editor: any) {
@@ -32,14 +30,13 @@ export default function Playground() {
     e.preventDefault();
     setBtnText("Running");
 
-    codeExec()
-    // const code: string = (editorRef.current as any).getValue();
-    // console.log("code is ", code)
+    const code: string = (editorRef.current as any).getValue();
+    const input: string = (stdinRef.current as any).getValue();
+    const response: string | undefined = await codeExec(code, language, input);
+    console.log("your output is: ");
 
-    // const response: string = await executeCode(language, code);
-
-    // setOutput(response);
-    // setBtnText("runCode");
+    setOutput(response!);
+    setBtnText("runCode");
   }
 
   // props
