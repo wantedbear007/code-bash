@@ -10,16 +10,10 @@ export default function LanguageSelector({
   language,
   selectLanguage,
 }: LanguageSelector) {
-  // const [selectedLanguage, setSelectedLanguage] = useState<string>(language);
-
   const languages = Object.entries(LANGUAGE_VERSIONS);
 
   const handleChange = (event: any) => {
-    // setSelectedLanguage(event.target.value);
-    // console.log(selectedLanguage);
-    console.log(event.target.value);
     selectLanguage(event.target.value);
-    // console.log("selected language is: ", language);
   };
 
   return (

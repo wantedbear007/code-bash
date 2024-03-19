@@ -10,10 +10,13 @@ export async function executeCode(
   sourceCode: string
 ): Promise<string> {
   let resFiltered: string = "error";
+  const lang: string = language == "cpp" ? "c++" : language;
+  console.log("language selectedc is ", lang)
 
   try {
+    console.log ("before callingg !")
     const response = await APIService.post("/execute", {
-      language: language,
+      language: language == "cpp" ? "c++" : language,
       version: LANGUAGE_VERSIONS[language],
       files: [
         {
@@ -22,11 +25,13 @@ export async function executeCode(
       ],
     });
 
-    if (response.status != 200) {
-      throw new Error("internal error !");
-    }
+    console.log("after calling ", response)
 
-    resFiltered = response.data["run"]["output"];
+    // if (response.status != 200) {
+    //   throw new Error("internal error !");
+    // }
+
+    // resFiltered = response.data["run"]["output"];
   } catch (err: any) {
     resFiltered = err;
   } finally {
